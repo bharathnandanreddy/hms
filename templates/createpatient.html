@@ -7,31 +7,44 @@
 
 {% block content %}
 		<div class="register" style="width:60%">
-			<h1>Create Customer</h1>
-			<form action="{{ url_for('createCustomer') }}" method="post" autocomplete="off">
+			<h1>Patient Registration</h1>
+			<form action="{{ url_for('createPatient') }}" method="post" autocomplete="off">
 				<div class="row">
                     <div class="col"  style="margin-right:30px">
-                        <input  type="number" name="ssn_id" placeholder="Customer SSN ID" id="ssn_id" style=" width: 310px;
+                        <input  type="number" name="ssn_id" placeholder="Patient SSN ID" id="ssn_id" style=" width: 310px;
                         height: 50px;
                         border: 1px solid #dee0e4;
                         margin-bottom: 20px;
                         padding: 0 15px;" required>
                     </div>
                     <div class="col">
-                        <input type="text" name="add_1" placeholder="Address Line 1" id="add_1" required>
+                        <select name="rtype" id="rtype" style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;">
+                            <option value="" selected disabled hidden>Type of Bed</option>
+                            <option value="General">General Ward</option>
+                            <option value="Semi">Semi Sharing</option>
+                            <option value="Single">Single Room</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col" style="margin-right:30px">
-                        <input type="text" name="cust_name" placeholder="Customer Name" id="cust_name" required>
+                        <input type="text" name="pat_name" placeholder="Patient Name" id="pat_name" required>
                     </div>
                     <div class="col">
-                        <input type="text" name="add_2" placeholder="Address Line 2" id="add_2" required>
+                        <input type="text" name="address" placeholder="Address" id="address" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col" style="margin-right:30px">
-                        <input type="password" name="cust_pass" placeholder="Password" id="cust_pass" required>
+                        <input type="number" name="age" placeholder="Age" id="age" style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;" required>
                     </div>
                     <div class="col">
                         <input type="text" name="city" placeholder="City" id="city" required>
@@ -39,7 +52,7 @@
                 </div>
                 <div class="row">
                     <div class="col" style="margin-right:30px">
-                        <input  type="number" name="age" placeholder="Age" id="age" style=" width: 310px;
+                        <input  type="text" name="doj" placeholder="Date of Joining" id="doj" onfocus="(this.type='date')" onblur="(this.type='text')" style=" width: 310px;
                         height: 50px;
                         border: 1px solid #dee0e4;
                         margin-bottom: 20px;

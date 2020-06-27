@@ -253,8 +253,8 @@ def accountDetails(cid):
 
 
 
-@app.route('/customer/createcustomer', methods=['GET', 'POST'])
-def createCustomer():
+@app.route('/patients/createpatient', methods=['GET', 'POST'])
+def createPatient():
 
     if(session):
         if(session["loggedin"]):
@@ -262,47 +262,40 @@ def createCustomer():
             employee=session['employee']
             if(employee):
                 msg = ''
-                if request.method == 'POST' and 'ssn_id' in request.form and 'cust_name' in request.form and 'cust_pass' in request.form and 'age' in request.form and 'add_1' in request.form and 'add_2' in request.form and 'city' in request.form and 'state' in request.form:
+                if request.method == 'POST' and 'ssn_id' in request.form and 'pat_name' in request.form and 'age' in request.form and 'doj' in request.form and 'rtype' in request.form and 'address' in request.form and 'city' in request.form and 'state' in request.form:
                     ssn_id = request.form['ssn_id']
-                    cust_name = request.form['cust_name']
-                    cust_pass = request.form['cust_pass']
+                    pat_name = request.form['pat_name']
                     age = request.form['age']
-                    add_1 = request.form['add_1']
-                    add_2 = request.form['add_2']
+                    doj = request.form['doj']
+                    rtype = request.form['rtype']
+                    address = request.form['address']
                     city = request.form['city']
                     state = request.form['state']
-                    # Check if customer exists already in database
+                    # Check if patient exists already in database
                     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                     # If account exists show error and validation checks
                     print(ssn_id)
                     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                    cursor.execute('SELECT * FROM customer WHERE ssn_id = %s', (ssn_id,))
+                    cursor.execute('SELECT * FROM patient WHERE ssn_id = %s', (ssn_id,))
                     account = cursor.fetchone()
                     # If account exists show error and validation checks
                     if account:
-                        msg = 'Customer already exists with the same SSN ID!'
+                        msg = 'Patient already exists with the same SSN ID!'
                     elif len(ssn_id)!=9:
                         msg = 'SSN ID should be 9 digits'
-                    elif not re.match(r'[A-Za-z]+', cust_name):
-                        msg = 'Username must contain only characters'
-                    elif not ssn_id or not cust_name or not cust_pass:
+                    elif not re.match(r'[A-Za-z]+', pat_name):
+                        msg = 'Patient Name must contain only characters'
+                    elif not ssn_id or not pat_name:
                         msg = 'Please fill out the form!'
                     else:
                         # Account doesn't exist and form data is valid, insert into table
-                        cursor.execute('INSERT INTO customer(ssn_id, cust_name, cust_pass, age, address_1, address_2, city,state) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)', (ssn_id, cust_name, cust_pass, age, add_1, add_2, city, state))
+                        cursor.execute('INSERT INTO patient(ssn_id, pat_name, age, doj, rtype, address, city, state, status) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)', (ssn_id, pat_name, age, doj, rtype, address, city, state, "Active"))
                         mysql.connection.commit()
-                        msg = 'Customer record successfully created'
-                        cursor.execute('select cust_id from customer where ssn_id = %s', (ssn_id,))
-                        cust_id=(cursor.fetchone())['cust_id']
-                        ts = time.time()
-                        print("cust id", cust_id)
-                        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-                        cursor.execute('INSERT INTO customer_status(ssn_id ,cust_id ,status ,message ,last_updated) VALUES(%s, %s, %s, %s, %s)', (ssn_id, cust_id, "Active", msg, timestamp))
-                        mysql.connection.commit()
+                        msg = 'Patient record created successfully'
                         
 
                 # Show registration form with message (if any)
-                return render_template('createcustomer.html', msg=msg)
+                return render_template('createpatient.html', msg=msg)
                 
                 
             
@@ -361,7 +354,7 @@ def createAccount():
 
     
 
-@app.route('/customer/updatecustomer/<int:cust_id>', methods=['GET', 'POST'])
+@app.route('/patients/updatepatient/<int:cust_id>', methods=['GET', 'POST'])
 def updateCustomer(cust_id):
     
     if(session):
