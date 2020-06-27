@@ -26,3 +26,27 @@ INSERT INTO USERSTORE
     ('user2', '123456','pharmacist' ,'2020-01-01 00:00:01'),
     ('user3', '123456','diagnostic' ,'2020-01-01 00:00:01');
 
+
+CREATE TABLE patient(
+    ssn_id INT NOT NULL,
+    pat_id INT NOT NULL AUTO_INCREMENT,
+    pat_name VARCHAR(100) NOT NULL,
+    age INT NOT NULL,
+    doj DATE NOT NULL,
+    rtype VARCHAR(20) NOT NULL,
+    address VARCHAR(100) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    state VARCHAR(50) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    PRIMARY KEY (pat_id)
+);
+
+
+ALTER TABLE patient AUTO_INCREMENT=100000000;
+
+
+INSERT INTO patient(ssn_id, pat_name, age, doj, rtype, address, city, state, status)
+VALUES
+(100000001, 'Alex', 20, '2020-06-27', 'General', 'Street no 8', 'Hyderabad', 'Telangana', 'Active'),
+(100000002, 'John', 40, '2020-06-27', 'Semi', 'Street no 6', 'Hyderabad', 'Telangana', 'Active'),
+(100000003, 'Ethan', 60, '2020-06-27', 'Single', 'Street no 4', 'Hyderabad', 'Telangana', 'Active');
