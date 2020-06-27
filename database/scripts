@@ -5,165 +5,24 @@ GRANT ALL PRIVILEGES ON *.* TO 'manager'@'localhost';
 \connect manager@localhost;
 manager
 
-create database bms;
-use bms;
+create database hms;
+use hms;
  
 ---------------------------------------------------
 
 Schema 
 
-create table empstore(
+create table USERSTORE(
 user_id VARCHAR(100) NOT NULL,
 password VARCHAR(100) NOT NULL,
+role VARCHAR(100) NOT NULL,
 timestamp timestamp,
 PRIMARY KEY ( user_id ));
 
 
-INSERT INTO empstore
-VALUES
-    ('executive', '123456', '2016-01-01 00:00:01');
-
-
-CREATE TABLE customer(
-ssn_id INT NOT NULL,
-cust_id INT NOT NULL AUTO_INCREMENT,
-cust_name VARCHAR(100) NOT NULL,
-cust_pass VARCHAR(100) NOT NULL,
-age INT,
-address_1 VARCHAR(100),
-address_2 VARCHAR(100),
-city VARCHAR(20),
-state VARCHAR(20),
-PRIMARY KEY (cust_id)
-);
-
-
-ALTER TABLE customer AUTO_INCREMENT=100000000;
-
-
-INSERT INTO customer(ssn_id, cust_name, cust_pass, age, address_1, address_2, city,state)
-VALUES(100000001, 'Alex', '123456', 20, 'Street no 8', 'Habsiguda', 'Hyderabad', 'Telangana' );
-
-INSERT INTO customer(ssn_id, cust_name, cust_pass, age, address_1, address_2, city,state)
-VALUES(100000002, 'John', '123456', 20, 'Street no 5', 'DFL Colony', 'Bangalore', 'Karnataka' );
-
-
-create table employee(
-emp_id VARCHAR(100) NOT NULL,
-user_id VARCHAR(100) NOT NULL,
-emp_name VARCHAR(100) NOT NULL,
-emp_designation VARCHAR(100) NOT NULL,
-PRIMARY KEY ( emp_id ),
-FOREIGN KEY (user_id) REFERENCES empstore(user_id));
-
-
-INSERT INTO employee
-VALUES
-('1001','executive','Suresh', 'account executive' );
-
-
-create table customer_status(
-ssn_id int not null,
-cust_id int not null,
-status varchar(20) not null,
-message varchar(200) not null,
-last_updated timestamp,
-primary key (cust_id),
-FOREIGN KEY (cust_id) REFERENCES customer(cust_id));
-
-
-INSERT INTO customer_status(ssn_id, cust_id, status, message, last_updated)
-VALUES
-(100000001,100000000,'active',"Account created successfully",'2016-01-01 00:00:01');
-
-INSERT INTO customer_status(ssn_id, cust_id, status, message, last_updated)
-VALUES
-(100000002,100000001,'active',"Account created successfully",'2016-01-01 00:00:01');
-
-
-create table account(
-acc_id int not null  auto_increment,
-cust_id int not null,
-acc_type varchar(100) not null,
-amount int,
-primary key (acc_id),
-FOREIGN KEY (cust_id) REFERENCES customer(cust_id));
-
-
-ALTER TABLE account AUTO_INCREMENT=100000000;
-
-
-INSERT INTO account(cust_id, acc_type, amount)
-VALUES
-(100000000,'savings', 10000);
-
-INSERT INTO account(cust_id, acc_type, amount)
-VALUES
-(100000000,'current', 8000);
-
-INSERT INTO account(cust_id, acc_type, amount)
-VALUES
-(100000001,'savings', 5000);
-
-INSERT INTO account(cust_id, acc_type, amount)
-VALUES
-(100000001,'current', 12000);
-
-
-create table account_status(
-acc_id int not null,
-cust_id int not null,
-status varchar(20) not null,
-message varchar(200) not null,
-last_updated timestamp,
-primary key (acc_id),
-FOREIGN KEY (acc_id) REFERENCES account(acc_id),
-FOREIGN KEY (cust_id) REFERENCES customer(cust_id));
-
-
-INSERT INTO account_status(acc_id, cust_id, status, message, last_updated)
-VALUES
-(100000000,100000000,'Active',"Account created succussfully",'2016-01-01 00:00:01');
-
-INSERT INTO account_status(acc_id, cust_id, status, message, last_updated)
-VALUES
-(100000001,100000000,'Active',"Account created succussfully",'2016-01-01 00:00:01');
-
-INSERT INTO account_status(acc_id, cust_id, status, message, last_updated)
-VALUES
-(100000002,100000001,'Active',"Account created succussfully",'2016-01-01 00:00:01');
-
-INSERT INTO account_status(acc_id, cust_id, status, message, last_updated)
-VALUES
-(100000003,100000001,'Active',"Account created succussfully",'2016-01-01 00:00:01');
-
-
-create table transactions(
-trans_id int not null auto_increment,
-acc_id int not null,
-amount int not null,
-details varchar(20) not null,
-timestamp timestamp,
-primary key (trans_id),
-FOREIGN KEY (acc_id) REFERENCES account(acc_id));
-
-
-alter table transactions auto_increment=1000;
-
-
-INSERT INTO transactions(acc_id, amount, details, timestamp)
-VALUES
-(100000000, 10000, 'Credit', '2020-06-16 00:00:01');
-
-INSERT INTO transactions(acc_id, amount, details, timestamp)
-VALUES
-(100000001, 8000, 'Credit', '2020-06-16 00:00:01');
-
-INSERT INTO transactions(acc_id, amount, details, timestamp)
-VALUES
-(100000002, 5000, 'Credit', '2020-06-16 00:00:01');
-
-INSERT INTO transactions(acc_id, amount, details, timestamp)
-VALUES
-(100000003, 12000, 'Credit', '2020-06-16 00:00:01');
+INSERT INTO USERSTORE
+    VALUES
+    ('user1', '123456','admission' ,'2020-01-01 00:00:01'),
+    ('user2', '123456','pharmacist' ,'2020-01-01 00:00:01'),
+    ('user3', '123456','diagnostic' ,'2020-01-01 00:00:01');
 

@@ -7,16 +7,14 @@
 
 {% block content %}
 <div class="login">
-    <h1>BMS</h1>
+    <h1>HMS</h1>
     <div class="links">
-        <a href="{{ url_for('logas',emp='customer') }}" class={{cust}}>Cashier / Teller </a>
-        <a href="{{ url_for('logas',emp='employee') }}" class={{emp}}>Executive</a>
     </div>
     <form action="{{ url_for('login') }}" method="post">
         <label for="username">
             <i class="fas fa-user"></i>
         </label>
-        <input type="text" name=id placeholder={{username}} id="username" required>
+        <input type="text" name=id placeholder=User-ID id="username" required>
         <label for="password">
             <i class="fas fa-lock"></i>
         </label>

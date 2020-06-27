@@ -18,14 +18,15 @@ app.secret_key = 'secret_key_007'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'manager'
 app.config['MYSQL_PASSWORD'] = 'manager'
-app.config['MYSQL_DB'] = 'bms'
+app.config['MYSQL_DB'] = 'hms'
 
 
 mysql = MySQL(app)
-employee=False
-user_view="Account/SSN/Customer-ID "
-empVisible=""
-custVisible="active"
+
+employee=""
+
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -33,55 +34,24 @@ def index():
         if(session["loggedin"]):
             global employee
             employee=session['employee']
-            if(employee):
-                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                print(session['userid'])
-                cursor.execute('SELECT * FROM employee WHERE user_id = %s', (session['userid'],))
-                account = cursor.fetchone()
-                if(account):
-                    return  render_template('empHome.html',empname=account['emp_name'])
-            else:
-                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                print(session['cust_id'])
-                cursor.execute('SELECT customer.cust_name, account.acc_id FROM customer,account WHERE account.cust_id=customer.cust_id and customer.cust_id = %s', (session['cust_id'],))
-                account = cursor.fetchall()
-                print(account)
-                if(account):
-                    return  render_template('custHome.html',accounts=account)
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            print(session['userid'])
+            cursor.execute('SELECT * FROM userstore WHERE user_id = %s', (session['userid'],))
+            account = cursor.fetchone()
+            if(account):
+                if(employee=="admission"):
+                    return  render_template('admissionHome.html')
+                elif(employee=="pharmacist"):
+                    return employee+"parama"
+                elif(employee=="diagnostic"):
+                    return employee+"diag"
+                
+            
+
     
-    return render_template('index.html',username=user_view, msg='',emp=empVisible,cust=custVisible)
+    return render_template('index.html', msg='')
 
 
-@app.route('/login/<string:emp>', methods=['GET', 'POST'])
-def logas(emp):
-
-    if(session):
-        if(session["loggedin"]):
-            global employee
-            employee=session['employee']
-            if(employee):
-                return   redirect('/')
-            else:
-                return  redirect('/')
-
-
-    if(emp=="employee"):
-        global empVisible       
-        global custVisible        
-  
-        global user_view
-        custVisible=""
-        employee=True
-        user_view="Executive-ID"
-        empVisible="active"
-        return render_template('index.html',username=user_view, msg='',emp=empVisible,cust=custVisible)
-    else:
-       
-        empVisible=""
-        custVisible="active"
-        employee=False
-        user_view="Account/SSN/Customer-ID "
-        return render_template('index.html',username=user_view, msg='',emp=empVisible,cust=custVisible)
 
 
 
@@ -111,49 +81,31 @@ def login():
       
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-        if(employee):
-            cursor.execute('SELECT * FROM empstore WHERE user_id = %s AND password = %s', (username, password))
-            # Fetch one record and return result
-            account = cursor.fetchone()
-            # If account exists 
-            if account:
-                # Creating session data
-                session['loggedin'] = True
-                session['userid'] = account['user_id']
-                session['employee']= employee
+        cursor.execute('SELECT * FROM userstore WHERE user_id = %s AND password = %s', (username, password))
+        # Fetch one record and return result
+        account = cursor.fetchone()
+        # If account exists 
+        if account:
+            # Creating session data
+            session['loggedin'] = True
+            session['userid'] = account['user_id']
+            employee=account['role']
+            session['employee']= account['role']
 
-                ts = time.time()
-                timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-                print(timestamp)
-                cursor.execute('UPDATE empstore SET timestamp = %s WHERE  user_id = %s;',(timestamp,account['user_id']))
-                mysql.connection.commit()
-                return  redirect('/')
-            else:
-                # Account doesnt exist 
-                msg = 'Incorrect username/password!!!'
+            ts = time.time()
+            timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+            print(employee)
+            cursor.execute('UPDATE userstore SET timestamp = %s WHERE  user_id = %s;',(timestamp,account['user_id']))
+            mysql.connection.commit()
+            return  redirect('/')
         else:
-            try : 
-                username= int (username)
-                cursor.execute('SELECT  customer.cust_id ,customer.cust_name  FROM customer,account WHERE customer.cust_id=account.cust_id and customer.cust_pass=%s and (customer.cust_id=%s or customer.ssn_id=%s or account.acc_id=%s);', (password,username,username,username))
-                account = cursor.fetchone()
-                # If account exists 
-                if account:
-                    session['loggedin'] = True
-                    session['cust_id'] = account['cust_id']
-                    session['employee']= employee
-                # Redirecting to home page
-                    return  redirect('/')
-                
-                else:
-                    # Account doesnt exist 
-                    
-                    msg = 'Incorrect username/password!!!'
-            
-            except:
-                msg = 'Incorrect username/password!!!'
+            # Account doesnt exist 
+            msg = 'Incorrect username/password!!!'
+        
+        
     # Show the login form with message (if any)
     
-    return render_template('index.html',username=user_view, msg=msg,emp=empVisible,cust=custVisible)
+    return render_template('index.html', msg=msg)
 
 
 
