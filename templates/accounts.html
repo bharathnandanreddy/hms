@@ -1,0 +1,116 @@
+{% extends "empbase.html" %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+
+<div style="display: flex;
+flex-wrap: wrap;
+justify-content: center;">
+  <div style="width: 70%;margin-top: 10px;">
+
+    <div class="row" style="padding-right: 20px;padding-left: 20px;padding-top: 20px;" >
+      
+      <form action="/accounts/createaccount" method="POST">
+        <button type="submit"  id="add" class="d-flex justify-content-start btn" style="padding-top: 10px;
+        height: 50px;
+        background-color: #3274d6;
+        border: 0;
+        border-color:#3274d6 ;
+        cursor: pointer;
+        font-weight: bold;
+        color: #ffffff;
+       ">Add account </button>
+      </form>
+       
+       <form class="d-flex justify-content-end col"  action="{{ url_for('searchAccount') }}" method="POST">
+        <input style=" display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;width: 310px;
+        height: 50px;
+        border: 1px solid #dee0e4;
+        margin-bottom: 20px;
+        padding: 0 15px;" type="number" val name="search" placeholder="Account ID or Customer ID" id="search" required>
+    
+      <button type="submit" style="    display: flex;
+      border: 0;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      background-color: #3274d6;
+      color: #ffffff;" for="password">
+        <i class="fas fa-search"></i>
+      </button>
+  </form>
+      
+  </form> 
+  </div>
+</div>
+
+
+
+    <div  style="margin-top: 10px; width: 70%; max-height: 450px;  overflow-y: auto;" class="login">
+      <div class="container" style="margin:10px" >
+        <center>{{ msg }}</center>
+    </div>
+  
+<table id="dtDynamicVerticalScrollExample" style="width:100%;"  class="table table-hover" >
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">ACCOUNT ID</th>
+        <th scope="col">CUSTOMER ID</th>
+        <th scope="col">ACCOUNT TYPE</th>
+        <th scope="col">STATUS</th>
+        <th scope="col">MESSAGE</th>
+        <th scope="col">LAST UPDATED</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for i in accounts %} 
+ 
+      <tr class="clickable-row" data-href="{{ url_for('accountDetails',cid=i.acc_id) }}" method = POST>
+        <th scope="row">{{ loop.index}}</th>
+        <td>{{i.acc_id}}</td>
+        <td>{{i.cust_id}}</td>
+        <td>{{i.acc_type}}</td>
+        <td>{{i.status}}</td>
+        <td>{{i.message}}</td>
+        <td>{{i.last_updated}}</td>
+        
+      </tr>
+{%endfor%} 
+     
+    </tbody>
+  </table>
+
+    </div>
+
+
+
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script>
+    $("#accounts").css("color", "#ffffff");
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+
+    $("search-btn").click(function() {
+        window.location = $('').data();
+    });
+    
+
+
+</script>
+{% endblock scripts %}

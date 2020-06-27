@@ -1,0 +1,27 @@
+{% extends "empbase.html" %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+
+    <div style="color: rgb(211, 216, 226);display:flex; flex-direction:column; justify-content:center;
+    min-height:80vh;">
+        <center>
+             <h2>Hello {{empname}}.</h2> <br> <h4>Welcome to Bank Management System.<br>You can start using the services of the bank provided in the top nav bar</h4>
+        </center>
+    </div>
+
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script>
+    $("#home").css("color", "#ffffff");
+</script>
+{% endblock scripts %}
+    

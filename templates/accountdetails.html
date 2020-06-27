@@ -1,0 +1,95 @@
+{% extends "empbase.html" %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+		<div class="register" style="width:40%;">
+			<h1>Delete Account</h1>
+			<div>
+
+
+                <div style="margin:30px">
+                <div class="row">
+
+                    <div class="col-4" style="height: 50px;align-self: center;">
+                        Account ID 
+                    </div>
+                    <div class="col">
+                        <input disabled type="number" name="cust_id" placeholder="{{account.acc_id}}" id="cust_id" style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;" required>
+                    </div>
+
+                </div>
+                                
+              
+               
+                 <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">
+                        Acccount Type
+                    </div>
+                    <div class="col">
+                        <input disabled  type="text" name="acc_type" placeholder="{{account.acc_type}}" id="acc_type" style=" width: 310px;
+                            height: 50px;
+                            border: 1px solid #dee0e4;
+                            margin-bottom: 20px;
+                            padding: 0 15px;" required>
+                        </div>
+                 </div>
+
+                 <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">
+                        Verification 
+                    </div>
+                    <div class="col">
+                        <input id="del_name"  type="text" name="del_name" placeholder="Type yes to start delete" style=" width: 310px;
+                            height: 50px;
+                            border: 1px solid #dee0e4;
+                            margin-bottom: 20px;
+                            padding: 0 15px;" required>
+                        </div>
+                 </div>
+                
+                </div>
+           
+                    <center>{{ msg }}</center>
+
+
+                    
+
+                    <button id="delete" style="width: 100%;padding: 15px;margin-top: 20px;background-color: #3274d6;border: 0;cursor: pointer;font-weight: bold;color: #ffffff;transition: background-color 0.2s;" data-href="{{ url_for('deleteAccount',cid=account.acc_id) }}" >Delete</button>
+                
+                
+                
+				
+				
+                </div>
+            
+        </div>
+
+{% endblock content%}
+
+
+{% block scripts %}
+<script>
+    $("#accounts").css("color", "#ffffff");
+    $("#delete").click(function(){
+        console.log($("#cust_name").val(),$("#del_name").val());
+        
+        if("yes"===$("#del_name").val()){
+    
+
+            window.location = $(this).data("href");
+
+        }
+        else{
+            $("#del_name").val('')
+        }
+    })
+</script>
+{% endblock scripts %}

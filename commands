@@ -1,0 +1,8 @@
+git remote add origin  'https://github.com/bharathnandanreddy/bms.git'
+git pull origin master
+
+pip install virtualenv
+pip install Flask, 
+pip install flask_fontawesome
+pip install MySQL
+pip install flask_mysqldb

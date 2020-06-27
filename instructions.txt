@@ -1,0 +1,31 @@
+** instructions **
+...
+
+-> run all commands present in the scripts file in mysql database 
+
+result : 
+	* creates a user called manager with password manager..
+	* create a database bms..
+	* create tables and insert values required..
+
+
+------------------------------------------------------------------
+
+-> Run app.py in the environment
+--------------------------------------------------------------------
+
+-> Default credentials for the bank management webiste
+
+** Executive Login  **
+
+Executive-Id : executive
+password : 123456
+
+
+** Cashier/Teller Login  **
+
+Customer - ID : 100000000
+password : 123456
+
+
+

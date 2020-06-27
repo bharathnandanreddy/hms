@@ -1,0 +1,173 @@
+{% extends "custBase.html" %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+
+<div style="display: flex;
+flex-wrap: wrap;
+justify-content: center;">
+  <div id="bypassme" style="width: 70%;margin-top: 10px;">
+
+    <div class="row" style="padding-right: 20px;padding-left: 20px;padding-top: 20px;" >
+
+       
+       <form class="d-flex justify-content-end col"  action="{{ url_for('transactions') }}" method="POST">
+
+        <select id="acc_number" name="acc_number" style=" width: 310px;
+                                    height: 50px;
+                                    border: 1px solid #dee0e4;
+                                    margin-bottom: 20px;
+                                    padding: 0 15px;" >
+                                    {% for i in accounts %} 
+                                    <option value="{{i['acc_id']}}">{{i['acc_id']}}</option>
+                                    {%endfor%} 
+                                    
+                            </select>
+
+                            &nbsp;&nbsp;&nbsp;
+        <input style=" display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;width: 310px;
+        height: 50px;
+        border: 1px solid #dee0e4;
+        margin-bottom: 20px;
+        padding: 0 15px;" type="date"  name="from" placeholder="From " id="from" required>
+        &nbsp;&nbsp;&nbsp;
+
+<input style=" display: flex;
+justify-content: center;
+align-items: center;
+width: 50px;width: 310px;
+height: 50px;
+border: 1px solid #dee0e4;
+margin-bottom: 20px;
+padding: 0 15px;" type="date"  name="to" placeholder="To  " id="to" required>
+        
+        &nbsp;&nbsp;&nbsp;
+      <button type="submit" style="    display: flex;
+      border: 0;
+      justify-content: center;
+      align-items: center;
+      width: 150px;
+      height: 50px;
+      background-color: #3274d6;
+      color: #ffffff;" for="password">
+        STATEMENT
+      </button>
+  </form>
+      
+  </form> 
+  </div>
+</div>
+</div>
+
+
+
+    <div id="trans_div"  style="margin-top: 10px;margin-bottom: 0px; width: 60%; max-height: 450px;  overflow-y: auto;" class="login">
+      <div >
+        <center>{{ msg }}</center>
+    </div>
+
+  
+<table id="trans_table" style="width:100%;"  class="table table-hover" >
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">TRANSACTION ID</th>
+        <th scope="col">DESCRIPTION</th>
+        <th scope="col">DATE</th>
+        <th scope="col">AMOUNT</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for i in trans %} 
+ 
+      <tr >
+        <th scope="row">{{ loop.index}}</th>
+        <td>{{i.trans_id}}</td>
+        <td>{{i.details}}</td>
+        <td>{{i.timestamp}}</td>
+        <td>{{i.amount}}</td>
+        
+      </tr>
+{%endfor%} 
+     
+    </tbody>
+  </table>
+
+  
+
+    </div>
+
+    <br>
+
+    <div style="display: flex;
+    flex-wrap: wrap;
+    justify-content: center;">
+
+
+
+    <button id="export"  class="exportVisible" style="    display: flex;
+    display: none;
+   
+    border: 0;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 50px;
+    background-color: #3274d6;
+    color: #ffffff;" for="password">
+      EXPORT
+    </button>
+    
+    </div>
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script>
+    $('#export').hide()
+    $("#transactions").css("color", "#ffffff");
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+
+    
+
+    if($('#trans_table tr').length>1){
+        
+        $('#export').css("display",'block');
+        
+    }
+
+    $("#export").click(function(){
+        var pdf = new jsPDF('p', 'pt', 'letter');
+
+    source = $('#trans_div')[0];
+
+
+
+
+
+    pdf.fromHTML(source,
+    15, 15,
+    {
+        'width': 170, 
+    }, function (dispose) {
+        pdf.save('Test.pdf');
+    });
+
+    });
+    
+    
+
+
+</script>
+{% endblock scripts %}s

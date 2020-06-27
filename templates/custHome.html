@@ -1,0 +1,120 @@
+{% extends "custBase.html" %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+
+
+
+
+    <div style="color: rgb(211, 216, 226);display:flex; flex-direction:column; justify-content:center;
+    margin-top: 150px;">
+        <center>
+             <h2>Hello {{accounts[0]['cust_name']}}.</h2> <br> <h4>Welcome to Bank Management System.<br>You can start using the services of the bank provided in the top nav bar</h4>
+             
+             
+             <div class="register" style="width: 40%;">
+
+                <form >
+            
+            
+                    
+                    <div class="container" style="margin-left: 20px;margin-right: 20px;color: black;" >
+                        <div>
+                            <div class="row">
+                                <div  class="col-4" style="height: 50px;align-self: center;">Account Number  :</div>
+                                <div>
+                                    
+                                    <select id="acc_number" name="acc_type" style=" width: 310px;
+                                    height: 50px;
+                                    border: 1px solid #dee0e4;
+                                    margin-bottom: 20px;
+                                    padding: 0 15px;" >
+                                    {% for i in accounts %} 
+                                    <option value="{{i['acc_id']}}">{{i['acc_id']}}</option>
+                                    {%endfor%} 
+                                    
+                            </select><br>
+                                </div>
+                              </div>  
+                        </div>
+                        
+                    </div>
+                     <div class="row" style="margin-bottom: 30px;">
+                <div class="col">
+                    <button type="button" onClick="deposit()" id="add" class="d-flex justify-content-start btn" style="padding-top: 10px;
+                    height: 50px;
+                    width: 130px;
+                    padding-left: 33px;
+                    background-color: #3274d6;
+                    border: 0;
+                    border-color:#3274d6 ;
+                    cursor: pointer;
+                    font-weight: bold;
+                    color: #ffffff;
+                   ">Deposit</button>
+                </div>
+                <div class="col">
+                    <button type="button" onClick="withdraw()" id="add" class="d-flex justify-content-start btn" style="padding-top: 10px;
+                    height: 50px;
+                    width: 130px;
+                    padding-left: 30px;
+                    background-color: #3274d6;
+                    border: 0;
+                    border-color:#3274d6 ;
+                    cursor: pointer;
+                    font-weight: bold;
+                    color: #ffffff;
+                   ">Withdraw</button>
+                </div>
+               
+                <div class="col">
+                    <button type="button" onClick="transfer()" id="add" class="d-flex justify-content-start btn" style="padding-top: 10px;
+                    height: 50px;
+                    width: 130px;
+                    padding-left: 33px;
+                    background-color: #3274d6;
+                    border: 0;
+                    border-color:#3274d6 ;
+                    cursor: pointer;
+                    font-weight: bold;
+                    color: #ffffff;
+                   ">Transfer</button>
+                </div>
+                  
+                
+            </div>
+                
+                </form>
+                
+            </div>
+             
+            
+            </center>
+    </div>
+
+   
+
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script>
+    $("#home").css("color", "#ffffff");
+    function deposit(){
+        window.location = "/deposit/"+$('#acc_number').val();
+    }
+    function withdraw(){
+        window.location = "/withdraw/"+$('#acc_number').val();
+    }
+    function transfer(){
+        window.location = "/transfer/"+$('#acc_number').val();
+    }
+</script>
+{% endblock scripts %}
+    

@@ -1,0 +1,104 @@
+
+{% extends "custBase.html" %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+		<div class="register" style="width: 40%;">
+			<h1>Withdraw</h1>
+			<form action="{{ url_for('withdraw',cid=account['acc_id']) }}" method="POST" autocomplete="off">
+
+
+                
+                <div class="container" style="margin-left: 20px;margin-right: 20px;" >
+                    <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">CUSTOMER ID  :</div>
+                    <div>
+                        <input disabled type="number" name="cust_id" placeholder="{{account['cust_id']}}" id="cust_id" style=" width: 310px;
+                        height: 50px;
+                        
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;" required>
+                      
+                    </div>
+                    </div>  
+
+                    <div class="row">
+                        <div  class="col-4" style="height: 50px;align-self: center;">Account Number  :</div>
+                        <div>
+                            
+                            <input disabled type="number" name="acc_id" placeholder="{{account['acc_id']}}" id="acc_id" style=" width: 310px;
+                            height: 50px;
+                            
+                            border: 1px solid #dee0e4;
+                            margin-bottom: 20px;
+                            padding: 0 15px;" required><br>
+                        </div>
+                      </div>  
+
+                      
+                      <div class="row">
+                        <div class="col-4" style="height: 50px;align-self: center;">Account Type :</div>
+                        <div>
+                            <input disabled type="text" name="cust_id" placeholder="{{account['acc_type']}}" id="cust_id" style=" width: 310px;
+                            height: 50px;
+                            
+                            border: 1px solid #dee0e4;
+                            margin-bottom: 20px;
+                            padding: 0 15px;" required>
+                          
+                        </div>
+                        </div>  
+
+                        <div class="row">
+                            <div class="col-4" style="height: 50px;align-self: center;">Balance :</div>
+                            <div>
+                                <input disabled type="number" name="amount" placeholder="{{account['amount']}}" id="amount" style=" width: 310px;
+                                height: 50px;
+                                
+                                border: 1px solid #dee0e4;
+                                margin-bottom: 20px;
+                                padding: 0 15px;" required>
+                              
+                            </div>
+                            </div>  
+                            <div class="row">
+                                <div class="col-4" style="height: 50px;align-self: center;">Withdraw amount :</div>
+                                <div>
+                                    <input  type="number" name="deposit_amount" placeholder="Enter amount to deposit" id="deposit_amount" style=" width: 310px;
+                                    height: 50px;
+                                    
+                                    border: 1px solid #dee0e4;
+                                    margin-bottom: 20px;
+                                    padding: 0 15px;" required>
+                                  
+                                </div>
+                                </div>  
+            
+                  
+        
+                    
+         
+            
+             
+                    <center>{{ msg }}</center>
+                </div>
+                
+				
+				<input type="submit" value="Withdraw">
+            </form>
+            
+        </div>
+
+{% endblock content%}
+
+
+{% block scripts %}
+<script>
+    $("#home").css("color", "#ffffff");
+</script>
+{% endblock scripts %}
