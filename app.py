@@ -61,10 +61,8 @@ def login():
         if(session["loggedin"]):
             global employee
             employee=session['employee']
-            if(employee):
-                return   redirect('/')
-            else:
-                return  redirect('/')
+            return   redirect('/')
+            
   
 
 
@@ -120,71 +118,52 @@ def logout():
 
 
 
-@app.route('/customers', methods=['GET', 'POST'])
+@app.route('/patients', methods=['GET', 'POST'])
 def customers():
     if(session):
         if(session["loggedin"]):
             global employee
             employee=session['employee']
-            if(employee):
+            if(employee=="admission"):
                 cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 print(session['userid'])
-                cursor.execute('SELECT * FROM customer_status')
+                cursor.execute('SELECT * FROM patient where status=%s',('active',))
                 account = cursor.fetchall()
                 
                 if(account):
-                    return render_template('customers.html',customers=account)
+                    return render_template('patients.html',patients=account)
                 else:
-                    return render_template('customers.html', customers=account, msg='No customer details\n Click on Add customer to add customer details')
+                    return render_template('patients.html', patients=account, msg='No customer details\n Click on Add customer to add customer details')
             
 
     return redirect('/')
 
 
-@app.route('/accounts', methods=['GET', 'POST'])
-def accounts():
-    if(session):
-        if(session["loggedin"]):
-            global employee
-            employee=session['employee']
-            if(employee):
-                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                print(session['userid'])
-                cursor.execute('SELECT account_status.acc_id ,account_status.cust_id ,account_status.status ,account_status.message ,account_status.last_updated,account.acc_type  FROM account_status,account WHERE account_status.acc_id=account.acc_id;')
-                account = cursor.fetchall()
-                
-                if(account):
-                    return  render_template('accounts.html',accounts=account)
-                else:
-                    return render_template('accounts.html', accounts=account, msg='No account details\n Click on Add account to add account details')
-            
 
-    return redirect('/')
-
-@app.route('/customers/', methods=['GET', 'POST'])
-def searchCustomer():
+@app.route('/patients/', methods=['GET', 'POST'])
+def searchPatient():
    
     if(session):
         if(session["loggedin"]):
             global employee
             employee=session['employee']
-            if(employee):
+            if(employee=="admission"):
                 
                 if request.method == 'POST' and 'search' in request.form:
                     cid= request.form['search']
                     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                     print(cid)
             
-                    cursor.execute('select * from customer_status where ssn_id=%s or cust_id=%s;',(int(cid),int(cid),))
+                    cursor.execute('select * from patient where ssn_id=%s or pat_id=%s;',(int(cid),int(cid),))
                     account = cursor.fetchall()
 
                     print('fecting',account)
                 
                     if(account):
-                        return  render_template('customers.html',customers=account)
+                        return  render_template('patients.html',patients=account)
             
 
-    return redirect('/customers')
+    return redirect('/patients')
 
 
 @app.route('/accounts/', methods=['GET', 'POST'])

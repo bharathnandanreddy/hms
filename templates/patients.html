@@ -1,4 +1,4 @@
-{% extends "empbase.html" %}
+{% extends "admissionbase.html" %}
 
 {% block title %}
     Home
@@ -23,10 +23,10 @@ justify-content: center;">
         cursor: pointer;
         font-weight: bold;
         color: #ffffff;
-       ">Add customer </button>
+       ">Add Patient </button>
       </form>
        
-       <form class="d-flex justify-content-end col"  action="{{ url_for('searchCustomer') }}" method="POST">
+       <form class="d-flex justify-content-end col"  action="{{ url_for('searchPatient') }}" method="POST">
         <input style=" display: flex;
         justify-content: center;
         align-items: center;
@@ -34,7 +34,7 @@ justify-content: center;">
         height: 50px;
         border: 1px solid #dee0e4;
         margin-bottom: 20px;
-        padding: 0 15px;" type="number" val name="search" placeholder="SSN ID or Customer ID" id="search" required>
+        padding: 0 15px;" type="number" val name="search" placeholder="SSN ID or Patient ID" id="search" required>
     
       <button type="submit" style="    display: flex;
       border: 0;
@@ -63,24 +63,24 @@ justify-content: center;">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">CUSTOMER ID</th>
+        <th scope="col">PATIENT ID</th>
         <th scope="col">SSN ID</th>
-        <th scope="col">STATUS</th>
-        <th scope="col">MESSAGE</th>
-        <th scope="col">LAST UPDATED</th>
+        <th scope="col">NAME</th>
+        <th scope="col">AGE</th>
+        <th scope="col">DOJ</th>
       </tr>
     </thead>
     <tbody>
 
-      {% for i in customers %} 
+      {% for i in patients %} 
  
-      <tr class="clickable-row" data-href="{{ url_for('customerDetails',cid=i.cust_id) }}" method = POST>
+      <tr class="clickable-row" data-href="{{ url_for('customerDetails',cid=i.pat_id) }}" method = POST>
         <th scope="row">{{ loop.index}}</th>
-        <td>{{i.cust_id}}</td>
+        <td>{{i.pat_id}}</td>
         <td>{{i.ssn_id}}</td>
-        <td>{{i.status}}</td>
-        <td>{{i.message}}</td>
-        <td>{{i.last_updated}}</td>
+        <td>{{i.pat_name}}</td>
+        <td>{{i.age}}</td>
+        <td>{{i.doj}}</td>
         
       </tr>
 {%endfor%} 
@@ -99,7 +99,7 @@ justify-content: center;">
 
 {% block scripts %}
 <script>
-    $("#customers").css("color", "#ffffff");
+    $("#patients").css("color", "#ffffff");
     $(".clickable-row").click(function() {
         window.location = $(this).data("href");
     });
