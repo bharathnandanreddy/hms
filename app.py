@@ -119,7 +119,7 @@ def logout():
 
 
 @app.route('/patients', methods=['GET', 'POST'])
-def customers():
+def patients():
     if(session):
         if(session["loggedin"]):
             global employee
@@ -127,13 +127,13 @@ def customers():
             if(employee=="admission"):
                 cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 print(session['userid'])
-                cursor.execute('SELECT * FROM patient where status=%s',('active',))
+                cursor.execute('SELECT * FROM patient where status=%s',('Active',))
                 account = cursor.fetchall()
                 
                 if(account):
                     return render_template('patients.html',patients=account)
                 else:
-                    return render_template('patients.html', patients=account, msg='No customer details\n Click on Add customer to add customer details')
+                    return render_template('patients.html', patients=account, msg='No patient details\n Click on Add customer to add patient details')
             
 
     return redirect('/')
@@ -192,21 +192,21 @@ def searchAccount():
     return redirect('/accounts')
 
 
-@app.route('/customers/details/<int:cid>', methods=['GET', 'POST'])
-def customerDetails(cid):
+@app.route('/patients/details/<int:pat_id>', methods=['GET', 'POST'])
+def patientDetails(pat_id):
     if(session):
         if(session["loggedin"]):
             global employee
             employee=session['employee']
             if(employee):
                 cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                print('type',type(cid))
-                cursor.execute('SELECT * FROM customer where cust_id= %s ', (int(cid),))
+                print('type',type(pat_id))
+                cursor.execute('SELECT * FROM patient where pat_id= %s ', (int(pat_id),))
                 account = cursor.fetchone()
                 
                 if(account):
                     print(account)
-                    return  render_template('custDetails.html',customer=account)
+                    return  render_template('patientDetails.html',patient=account)
             
 
     return redirect('/')
@@ -333,8 +333,8 @@ def createAccount():
 
     
 
-@app.route('/patients/updatepatient/<int:cust_id>', methods=['GET', 'POST'])
-def updateCustomer(cust_id):
+@app.route('/patients/updatepatient/<int:pat_id>', methods=['GET', 'POST'])
+def updatePatient(pat_id):
     
     if(session):
         if(session["loggedin"]):
@@ -342,31 +342,25 @@ def updateCustomer(cust_id):
             employee=session['employee']
             if(employee):
                 print(request.form)
-                if request.method == 'POST' and 'ssn_id' in request.form and 'cust_name' in request.form and 'cust_pass' in request.form and 'age' in request.form and 'add_1' in request.form and 'add_2' in request.form and 'city' in request.form and 'state' in request.form:
+                if request.method == 'POST' and 'ssn_id' in request.form and 'pat_name' in request.form and 'age' in request.form and 'doj' in request.form and 'rtype' in request.form and 'address' in request.form and 'city' in request.form and 'state' in request.form:
                     ssn_id = request.form['ssn_id']
-                    cust_name = request.form['cust_name']
-                    cust_pass = request.form['cust_pass']
+                    pat_name = request.form['pat_name']
                     age = request.form['age']
-                    add_1 = request.form['add_1']
-                    add_2 = request.form['add_2']
+                    doj = request.form['doj']
+                    rtype = request.form['rtype']
+                    address = request.form['address']
                     city = request.form['city']
                     state = request.form['state'] 
                     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                    print('type',type(cust_id))
-                    cursor.execute('UPDATE customer set cust_name=%s, cust_pass=%s, age=%s, address_1=%s, address_2=%s, city=%s, state=%s WHERE cust_id= %s ', (cust_name, cust_pass, age, add_1, add_2, city, state, int(cust_id)))
+                    print('type',type(pat_id))
+                    cursor.execute('UPDATE patient set pat_name=%s, age=%s, doj=%s, rtype=%s, address=%s, city=%s, state=%s WHERE pat_id= %s ', (pat_name, age, doj, rtype, address, city, state, int(pat_id)))
                     mysql.connection.commit()
 
-                    ts = time.time()
-                    print("cust id", cust_id)
-                    timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-                    cursor.execute('UPDATE customer_status set message=%s ,last_updated=%s WHERE cust_id=%s', ("Customer details updated", timestamp, cust_id))
-                    mysql.connection.commit()
-
-                    cursor.execute('SELECT * FROM customer WHERE cust_id=%s', (cust_id, ))
+                    cursor.execute('SELECT * FROM patient WHERE pat_id=%s', (pat_id, ))
                     account = cursor.fetchone()
-                    return render_template('custDetails.html',customer=account)
+                    return render_template('patientDetails.html',patient=account)
                 else:
-                    print('form incomplete')
+                    print('Form Incomplete')
             
           
 
