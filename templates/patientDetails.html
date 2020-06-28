@@ -1,4 +1,4 @@
-{% extends "empbase.html" %}
+{% extends "admissionbase.html" %}
 
 {% block title %}
     Home
@@ -23,9 +23,9 @@ justify-content: center;">
         cursor: pointer;
         font-weight: bold;
         color: #ffffff;
-       ">Update customer </button>
+       ">Update Patient </button>
       
-       
+      <!-- 
        <div class="d-flex justify-content-end col">
         <input style=" display: flex;
         justify-content: center;
@@ -34,12 +34,12 @@ justify-content: center;">
         height: 50px;
         border: 1px solid #dee0e4;
         margin-bottom: 20px;
-        padding: 0 15px;" type="text" val id="del_name" placeholder="Type below Customer Name to remove" id="search" required>
-        <input style="display:none;" id="cust_names" type="text" value="{{customer['cust_name']}}"/>
+        padding: 0 15px;" type="text" val id="del_name" placeholder="Type below Patient Name to remove" id="search" required>
+        <input style="display:none;" id="cust_names" type="text" value="{{patient['pat_name']}}"/>
     
 
      
-      <button id="delete" data-href="{{ url_for('deleteCustomer',cid=customer.cust_id) }}" style="    display: flex;
+      <button id="delete" data-href="{{ url_for('deleteCustomer',cid=patient.pat_id) }}" style="    display: flex;
       border: 0;
       justify-content: center;
       align-items: center;
@@ -50,22 +50,22 @@ justify-content: center;">
         <i class="fas fa-trash"></i>
       </button>
     </div>
-      
+      -->
  
   </div>
 </div>
 
 <div class="register container" style="width:70%;padding: 10px; margin-top: 30px;">
-    <h1>Customer details</h1>
-    <form action="{{ url_for('updateCustomer',cust_id=customer.cust_id) }}" method="POST" autocomplete="off">
+    <h1>Patient Details</h1>
+    <form action="{{ url_for('updatePatient',pat_id=patient.pat_id) }}" method="POST" autocomplete="off">
     <div class="container" style="margin-top: 40px;margin-left: 30px; margin-right: 30px;">
         <div class="row" >
             <div class="col">
                 <div class="row">
                     <div class="col-4" style="height: 50px;align-self: center;">SSN ID  </div>
                     <div>
-                        <input id="ssn_id" name="ssn_id" value="{{ customer['ssn_id'] }}" style="display: none;"/>
-                    <input disabled type="number"  placeholder="{{customer['ssn_id']}}"  style=" width: 310px;
+                        <input id="ssn_id" name="ssn_id" value="{{ patient['ssn_id'] }}" style="display: none;"/>
+                    <input disabled type="number"  placeholder="{{patient['ssn_id']}}"  style=" width: 310px;
                         height: 50px;
                         border: 1px solid #dee0e4;
                         margin-bottom: 20px;
@@ -76,9 +76,42 @@ justify-content: center;">
             </div>
             <div class="col">
                 <div class="row">
-                    <div class="col-4" style="height: 50px;align-self: center;">Address Line 1  </div>
+                    <div class="col-4" style="height: 50px;align-self: center;">Type of Bed  </div>
                     <div>
-                    <input disabled type="text" id="add_1" name="add_1" placeholder="{{customer['address_1']}}" value="{{customer['address_1']}}" style=" width: 310px;
+                        <select disabled name="rtype" id="rtype" style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;">
+                            <option value="" selected disabled hidden>{{ patient['rtype'] }}</option>
+                            <option value="General">General Ward</option>
+                            <option value="Semi">Semi Sharing</option>
+                            <option value="Single">Single Room</option>
+                        </select>
+                    </div>
+                    </div>
+         
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">Patient Name </div>
+                    <div>
+                    <input disabled type="text" id="pat_name" name="pat_name" placeholder="{{patient['pat_name']}}" value="{{patient['pat_name']}}" style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;" required>
+                    </div>
+                    </div>
+         
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">Address </div>
+                    <div>
+                    <input disabled type="text" id="address" name="address" placeholder="{{patient['address']}}" value="{{patient['address']}}" style=" width: 310px;
                         height: 50px;
                         border: 1px solid #dee0e4;
                         margin-bottom: 20px;
@@ -91,37 +124,9 @@ justify-content: center;">
         <div class="row">
             <div class="col">
                 <div class="row">
-                    <div class="col-4" style="height: 50px;align-self: center;">Customer name </div>
+                    <div class="col-4" style="height: 50px;align-self: center;">Age  </div>
                     <div>
-                    <input disabled type="text" id="cust_name" name="cust_name" placeholder="{{customer['cust_name']}}" value="{{customer['cust_name']}}" style=" width: 310px;
-                        height: 50px;
-                        border: 1px solid #dee0e4;
-                        margin-bottom: 20px;
-                        padding: 0 15px;" required>
-                    </div>
-                    </div>
-         
-            </div>
-            <div class="col">
-                <div class="row">
-                    <div class="col-4" style="height: 50px;align-self: center;">Address Line 2 </div>
-                    <div>
-                    <input disabled type="text" id="add_2" name="add_2" placeholder="{{customer['address_2']}}" value="{{customer['address_2']}}" style=" width: 310px;
-                        height: 50px;
-                        border: 1px solid #dee0e4;
-                        margin-bottom: 20px;
-                        padding: 0 15px;" required>
-                    </div>
-                    </div>
-         
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="row">
-                    <div class="col-4" style="height: 50px;align-self: center;">Password  </div>
-                    <div>
-                    <input disabled type="text" id="cust_pass" name="cust_pass" placeholder="{{customer['cust_pass']}}" value="{{customer['cust_pass']}}" style=" width: 310px;
+                    <input disabled type="number" id="age" name="age" placeholder="{{patient['age']}}" value="{{patient['age']}}" style=" width: 310px;
                         height: 50px;
                         border: 1px solid #dee0e4;
                         margin-bottom: 20px;
@@ -134,7 +139,7 @@ justify-content: center;">
                 <div class="row">
                     <div class="col-4" style="height: 50px;align-self: center;">City </div>
                     <div>
-                    <input disabled type="text" id="city" name="city" placeholder="{{customer['city']}}" value="{{customer['city']}}" style=" width: 310px;
+                    <input disabled type="text" id="city" name="city" placeholder="{{patient['city']}}" value="{{patient['city']}}" style=" width: 310px;
                         height: 50px;
                         border: 1px solid #dee0e4;
                         margin-bottom: 20px;
@@ -147,9 +152,9 @@ justify-content: center;">
         <div class="row">
             <div class="col">
                 <div class="row">
-                    <div class="col-4" style="height: 50px;align-self: center;">Age </div>
+                    <div class="col-4" style="height: 50px;align-self: center;">Date of Joining </div>
                     <div>
-                    <input disabled type="number" id="age" name="age" placeholder="{{customer['age']}}" value="{{customer['age']}}" style=" width: 310px;
+                    <input disabled type="date" id="doj" name="doj" placeholder="{{patient['doj']}}" value="{{patient['doj']}}" style=" width: 310px;
                         height: 50px;
                         border: 1px solid #dee0e4;
                         margin-bottom: 20px;
@@ -162,7 +167,7 @@ justify-content: center;">
                 <div class="row">
                     <div class="col-4" style="height: 50px;align-self: center;">State </div>
                     <div>
-                    <input disabled type="text" id="state" name="state" placeholder="{{customer['state']}}" value="{{customer['state']}}" style=" width: 310px;
+                    <input disabled type="text" id="state" name="state" placeholder="{{patient['state']}}" value="{{patient['state']}}" style=" width: 310px;
                         height: 50px;
                         border: 1px solid #dee0e4;
                         margin-bottom: 20px;
@@ -210,15 +215,17 @@ justify-content: center;">
     })
 
     function updateEnable() {
-        document.getElementById("add_1").removeAttribute("disabled");
-        document.getElementById("cust_name").removeAttribute("disabled");
-        document.getElementById("add_2").removeAttribute("disabled");
-        document.getElementById("cust_pass").removeAttribute("disabled");
+        document.getElementById("address").removeAttribute("disabled");
+        document.getElementById("pat_name").removeAttribute("disabled");
+        document.getElementById("doj").removeAttribute("disabled");
+        document.getElementById("rtype").removeAttribute("disabled");
         document.getElementById("city").removeAttribute("disabled");
         document.getElementById("age").removeAttribute("disabled");
         document.getElementById("state").removeAttribute("disabled");
         document.getElementById("updatebtn").style.display = "block";
 
+        var rtype = "{{ patient['rtype'] }}";
+        document.getElementById("rtype").value = rtype;
         
     }
     

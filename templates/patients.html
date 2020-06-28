@@ -14,7 +14,7 @@ justify-content: center;">
 
     <div class="row" style="padding-right: 20px;padding-left: 20px;padding-top: 20px;" >
       
-      <form action="/customer/createcustomer" method="POST">
+      <form action="/patients/createpatient" method="POST">
         <button type="submit"  id="add" class="d-flex justify-content-start btn" style="padding-top: 10px;
         height: 50px;
         background-color: #3274d6;
@@ -36,7 +36,7 @@ justify-content: center;">
         margin-bottom: 20px;
         padding: 0 15px;" type="number" val name="search" placeholder="SSN ID or Patient ID" id="search" required>
     
-      <button type="submit" style="    display: flex;
+      <button type="submit" style="display: flex;
       border: 0;
       justify-content: center;
       align-items: center;
@@ -74,7 +74,7 @@ justify-content: center;">
 
       {% for i in patients %} 
  
-      <tr class="clickable-row" data-href="{{ url_for('customerDetails',cid=i.pat_id) }}" method = POST>
+      <tr class="clickable-row" data-href="{{ url_for('patientDetails',pat_id=i.pat_id) }}" method = POST>
         <th scope="row">{{ loop.index}}</th>
         <td>{{i.pat_id}}</td>
         <td>{{i.ssn_id}}</td>
