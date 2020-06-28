@@ -25,7 +25,7 @@ justify-content: center;">
         color: #ffffff;
        ">Update Patient </button>
       
-      <!-- 
+      
        <div class="d-flex justify-content-end col">
         <input style=" display: flex;
         justify-content: center;
@@ -35,11 +35,11 @@ justify-content: center;">
         border: 1px solid #dee0e4;
         margin-bottom: 20px;
         padding: 0 15px;" type="text" val id="del_name" placeholder="Type below Patient Name to remove" id="search" required>
-        <input style="display:none;" id="cust_names" type="text" value="{{patient['pat_name']}}"/>
+        <input style="display:none;" id="patient_names" type="text" value="{{patient['pat_name']}}"/>
     
 
      
-      <button id="delete" data-href="{{ url_for('deleteCustomer',cid=patient.pat_id) }}" style="    display: flex;
+      <button id="delete" data-href="{{ url_for('deletePatient',cid=patient.pat_id) }}" style="    display: flex;
       border: 0;
       justify-content: center;
       align-items: center;
@@ -50,7 +50,7 @@ justify-content: center;">
         <i class="fas fa-trash"></i>
       </button>
     </div>
-      -->
+     
  
   </div>
 </div>
@@ -197,14 +197,15 @@ justify-content: center;">
 
 {% block scripts %}
 <script>
-    $("#customers").css("color", "#ffffff");
+    $("#patients").css("color", "#ffffff");
+
 
 
 
 
     $("#delete").click(function(){
         
-        if($("#cust_names").val()===$("#del_name").val()){
+        if($("#patient_names").val()===$("#del_name").val()){
 
             window.location = $(this).data("href");
 

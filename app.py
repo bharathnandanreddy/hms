@@ -369,34 +369,24 @@ def updatePatient(pat_id):
     
 
 
-@app.route('/customer/<int:cid>', methods=['GET', 'POST'])
-def deleteCustomer(cid):
+@app.route('/patients/<int:cid>', methods=['GET', 'POST'])
+def deletePatient(cid):
     if(session):
         if(session["loggedin"]):
             global employee
             employee=session['employee']
-            if(employee):
+            if(employee=="admission"):
                 cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-                cursor.execute('DELETE FROM account_status WHERE cust_id = %s',(cid,))
+                cursor.execute('DELETE FROM patient WHERE pat_id = %s',(cid,))
                 mysql.connection.commit()
                 msg = 'Account record successfully deleted'
-                cursor.execute('DELETE FROM account WHERE cust_id = %s',(cid,))
-                mysql.connection.commit()
-
-                cursor.execute('DELETE FROM customer_status WHERE cust_id = %s',(cid,))
-                mysql.connection.commit()
-                msg = 'Customer record successfully deleted'
-                cursor.execute('DELETE FROM customer WHERE cust_id = %s',(cid,))
-                mysql.connection.commit()
-                
-                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
                 print(session['userid'])
-                cursor.execute('SELECT * FROM customer_status')
+                cursor.execute('SELECT * FROM patient')
                 account = cursor.fetchall()
                 
                 if(account):
-                    return render_template('customers.html', customers=account, msg=msg)
+                    return render_template('patients.html', patients=account, msg=msg)
             
           
     
