@@ -1,0 +1,245 @@
+{% extends "pharmaBase.html" %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+
+<input id="med_value" style="display: none;"value='{{medicines}}'>
+
+
+  <div style="width: 70%;margin-top: 10px;">
+
+    <div class="row" style="padding-right: 20px;padding-left: 20px;padding-top: 20px;margin-left: 10px;" >
+      
+        <form action="{{ url_for('issueMed',pat_id=patient.pat_id) }}" method="POST" autocomplete="off">
+        <button  type="submit" id="add" class="d-flex justify-content-start btn" style="padding-top: 10px;
+        height: 50px;
+        background-color: #3274d6;
+        border: 0;
+        border-color:#3274d6 ;
+        cursor: pointer;
+        font-weight: bold;
+        color: #ffffff;
+       ">Issue Medicines</button>
+       </form>
+      
+      
+            
+ 
+  </div>
+</div>
+
+<div class="register container" style="width:70%;padding: 10px; margin-top: 10px;margin-bottom: 10px;">
+    <h1>Patient Details</h1>
+    <form action="{{ url_for('updatePatient',pat_id=patient.pat_id) }}" method="POST" autocomplete="off">
+    <div class="container" style="margin-top: 10px;margin-left: 30px; margin-right: 30px;">
+        <div class="row" >
+            <div class="col">
+                <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">SSN ID  </div>
+                    <div>
+                        <input id="ssn_id" name="ssn_id" value="{{ patient['ssn_id'] }}" style="display: none;"/>
+                    <input disabled type="number"  placeholder="{{patient['ssn_id']}}"  style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;" required>
+                    </div>
+                    </div>
+         
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">Type of Bed  </div>
+                    <div>
+                        <select disabled name="rtype" id="rtype" style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;">
+                            <option value="" selected disabled hidden>{{ patient['rtype'] }}</option>
+                            <option value="General">General Ward</option>
+                            <option value="Semi">Semi Sharing</option>
+                            <option value="Single">Single Room</option>
+                        </select>
+                    </div>
+                    </div>
+         
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">Patient Name </div>
+                    <div>
+                    <input disabled type="text" id="pat_name" name="pat_name" placeholder="{{patient['pat_name']}}" value="{{patient['pat_name']}}" style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;" required>
+                    </div>
+                    </div>
+         
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">Address </div>
+                    <div>
+                    <input disabled type="text" id="address" name="address" placeholder="{{patient['address']}}" value="{{patient['address']}}" style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;" required>
+                    </div>
+                    </div>
+         
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">Age  </div>
+                    <div>
+                    <input disabled type="number" id="age" name="age" placeholder="{{patient['age']}}" value="{{patient['age']}}" style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;" required>
+                    </div>
+                    </div>
+         
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">City </div>
+                    <div>
+                    <input disabled type="text" id="city" name="city" placeholder="{{patient['city']}}" value="{{patient['city']}}" style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;" required>
+                    </div>
+                    </div>
+         
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">Date of Joining </div>
+                    <div>
+                    <input disabled type="date" id="doj" name="doj" placeholder="{{patient['doj']}}" value="{{patient['doj']}}" style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;" required>
+                    </div>
+                    </div>
+         
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col-4" style="height: 50px;align-self: center;">State </div>
+                    <div>
+                    <input disabled type="text" id="state" name="state" placeholder="{{patient['state']}}" value="{{patient['state']}}" style=" width: 310px;
+                        height: 50px;
+                        border: 1px solid #dee0e4;
+                        margin-bottom: 20px;
+                        padding: 0 15px;" required>
+                    </div>
+                    </div>
+         
+            </div>
+        </div>
+        
+    
+        
+    </div>
+    
+
+</form> 
+        
+        
+
+    
+</div>
+
+
+<div class="register container" style="width:70%;padding: 10px; margin-top: 50px;">
+    <h1> Issued Medicines</h1>
+    <table id="dtDynamicVerticalScrollExample" style="width:100%;"  class="table table-hover" >
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">NAME</th>
+            <th scope="col">QUANTITY</th>
+            <th scope="col">RATE</th>
+            <th scope="col">AMOUNT</th>
+            <th scope="col">ISSUE DATE</th>
+          </tr>
+        </thead>
+        <tbody>
+    
+          {% for i in medicines %} 
+     
+          <tr class="clickable-row" data-href="{{ url_for('patientDetails',pat_id=i.pat_id) }}" method = POST>
+            <th scope="row">{{ loop.index}}</th>
+            <td>{{i.med_name}}</td>
+            <td>{{i.med_quantity}}</td>
+            <td>{{i.med_rate}}</td>
+            <td>{{i.med_amount}}</td>
+            <td>{{i.issue_date}}</td>
+            
+          </tr>
+    {%endfor%} 
+         
+        </tbody>
+      </table>
+        
+        
+
+    
+</div>
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script>
+    $("#home").css("color", "#ffffff");
+    
+//     var med=($("#med_value").val()).substr(1,($("#med_value").val()).length-3).toString()
+
+//     med='\"'+med+'\"'
+//     console.log(med)
+
+// var med=Object.parse(med)
+
+// console.log(med,med.med_id)
+
+// var med=JSON.parse('{{medicines|tojson}}')
+// console.log(med,med[0].med_id)
+
+
+
+    $("#delete").click(function(){
+        
+        if($("#patient_names").val()===$("#del_name").val()){
+
+            window.location = $(this).data("href");
+
+        }
+        else{
+            $("#del_name").val('')
+        }
+    })
+
+
+    
+
+
+</script>
+{% endblock scripts %}

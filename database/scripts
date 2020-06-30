@@ -50,3 +50,45 @@ VALUES
 (100000001, 'Alex', 20, '2020-06-27', 'General', 'Street no 8', 'Hyderabad', 'Telangana', 'Active'),
 (100000002, 'John', 40, '2020-06-27', 'Semi', 'Street no 6', 'Hyderabad', 'Telangana', 'Active'),
 (100000003, 'Ethan', 60, '2020-06-27', 'Single', 'Street no 4', 'Hyderabad', 'Telangana', 'Active');
+ 
+
+
+CREATE TABLE patient_medicines(
+    med_id INT NOT NULL AUTO_INCREMENT,
+    pat_id INT NOT NULL,
+    med_name VARCHAR(100) NOT NULL,
+    med_quantity INT NOT NULL,
+    med_rate INT NOT NULL,
+    med_amount INT NOT NULL,
+    issue_date DATE NOT NULL,
+    PRIMARY KEY (med_id),
+FOREIGN KEY (pat_id) REFERENCES patient(pat_id));
+
+
+ALTER TABLE patient_medicines AUTO_INCREMENT=100000000;
+
+
+INSERT INTO patient_medicines(pat_id, med_name, med_quantity, med_rate, med_amount, issue_date)
+VALUES
+(100000001, 'A plus', 2,40, 80,'2020-06-27'),
+(100000002, 'B puls', 4,100, 400,'2020-06-27'),
+(100000003, 'C plus', 6,80,480, '2020-06-27');
+
+
+CREATE TABLE medicines(
+    med_id INT NOT NULL AUTO_INCREMENT,
+    med_name VARCHAR(100) NOT NULL,
+    med_rate INT NOT NULL,
+    available INT NOT NULL,
+    PRIMARY KEY (med_id)
+);
+
+
+ALTER TABLE medicines AUTO_INCREMENT=100000000;
+
+
+INSERT INTO medicines(med_name, med_rate, available)
+VALUES
+( 'A plus', 40, 1),
+( 'B puls',100, 1),
+( 'C plus',80,1);

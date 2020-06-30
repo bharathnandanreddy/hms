@@ -1,0 +1,104 @@
+{% extends "pharmaBase.html" %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+
+<div style="display: flex;
+flex-wrap: wrap;
+justify-content: center;">
+  <div style="width: 70%;margin-top: 10px;">
+
+    <div class="row" style="padding-right: 20px;padding-left: 20px;padding-top: 20px;" >
+      
+     
+       
+       <form class="d-flex justify-content-end col"  action="{{ url_for('searchPharmaPatient') }}" method="POST">
+        <input style=" display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;width: 310px;
+        height: 50px;
+        border: 1px solid #dee0e4;
+        margin-bottom: 20px;
+        padding: 0 15px;" type="number" val name="search" placeholder="SSN ID or Patient ID" id="search" required>
+    
+      <button type="submit" style="display: flex;
+      border: 0;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      background-color: #3274d6;
+      color: #ffffff;" for="password">
+        <i class="fas fa-search"></i>
+      </button>
+  </form>
+      
+  </form> 
+  </div>
+</div>
+
+
+
+    <div  style="margin-top: 10px; width: 70%; max-height: 450px;  overflow-y: auto;" class="login">
+      <div class="container" style="margin:10px" >
+        <center>{{ msg }}</center>
+    </div>
+  
+<table id="dtDynamicVerticalScrollExample" style="width:100%;"  class="table table-hover" >
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">PATIENT ID</th>
+        <th scope="col">SSN ID</th>
+        <th scope="col">NAME</th>
+        <th scope="col">AGE</th>
+        <th scope="col">DOJ</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for i in patients %} 
+ 
+      <tr class="clickable-row" data-href="{{ url_for('pharmaPatientDetails',pat_id=i.pat_id) }}" method = POST>
+        <th scope="row">{{ loop.index}}</th>
+        <td>{{i.pat_id}}</td>
+        <td>{{i.ssn_id}}</td>
+        <td>{{i.pat_name}}</td>
+        <td>{{i.age}}</td>
+        <td>{{i.doj}}</td>
+        
+      </tr>
+{%endfor%} 
+     
+    </tbody>
+  </table>
+
+    </div>
+
+
+
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+<script>
+    $("#home").css("color", "#ffffff");
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+
+    $("search-btn").click(function() {
+        console.log($('search').data())
+    });
+    
+
+
+</script>
+{% endblock scripts %}

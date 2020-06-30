@@ -1,0 +1,102 @@
+
+{% extends "pharmabase.html" %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+		<div class="register" style="width: 40%;">
+			<h1>Issue Medicines</h1>
+			<form action="{{  url_for('issueMed',pat_id=pat_id)}}" method="POST" autocomplete="off">
+
+
+                
+                <div class="container" style="margin-left: 20px;margin-right: 20px;" >
+
+                    <div class="row">
+                        <div  class="col-4" style="height: 50px;align-self: center;">Medicine  :</div>
+                        <div>
+                                    
+                            <select id="med_id" name="med_name" style=" width: 310px;
+                            height: 50px;
+                            border: 1px solid #dee0e4;
+                            margin-bottom: 20px;
+                            padding: 0 15px;" >
+                            {% for i in medicines %} 
+                            <option value="{{i['med_name']}}">{{i['med_name']}}</option>
+                            {%endfor%} 
+                            
+                    </select><br>
+                        </div>
+                      </div>  
+                      <div class="row">
+                        <div class="col-4" style="height: 50px;align-self: center;">Rate</div>
+                        <div>
+                            <input disabled  type="number"  placeholder="{{medicines[0].med_rate}}" id="rate" style=" width: 310px;
+                            height: 50px;
+                            
+                            border: 1px solid #dee0e4;
+                            margin-bottom: 20px;
+                            padding: 0 15px;" value="{{medicines[0].med_rate}}" required>
+                            <input style="display: none;"  type="number" name="rate" placeholder="{{medicines[0].med_rate}}" id="rate" style=" width: 310px;
+                            height: 50px;
+                            
+                            border: 1px solid #dee0e4;
+                            margin-bottom: 20px;
+                            padding: 0 15px;"  value="{{medicines[0].med_rate}}" required>
+                        
+                           
+                          
+                        </div>
+                        </div>  
+
+                      
+                      <div class="row">
+                        <div class="col-4" style="height: 50px;align-self: center;">Quantity :</div>
+                        <div>
+                            <input  type="text" name="quantity"  id="quantity" style=" width: 310px;
+                            height: 50px;
+                            
+                            border: 1px solid #dee0e4;
+                            margin-bottom: 20px;
+                            padding: 0 15px;" required>
+                          
+                        </div>
+                        </div>  
+ 
+            
+                  
+        
+                    
+         
+            
+             
+                    <center>{{ msg }}</center>
+                </div>
+                
+				
+				<input type="submit" value="Issue">
+            </form>
+            
+        </div>
+
+{% endblock content%}
+
+
+{% block scripts %}
+<script>
+    $("#home").css("color", "#ffffff");
+    $('#med_id').change(function(){
+        var med=JSON.parse('{{medicines|tojson}}')
+        var i= $('option:selected',this).index()    ; 
+        console.log(med,med[i])
+        console.log($('#rate').val())
+        $('#rate').val(med[i].med_rate)
+        console.log($('#rate').val())
+
+    
+})
+</script>
+{% endblock scripts %}
