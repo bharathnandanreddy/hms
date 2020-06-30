@@ -42,10 +42,9 @@ def index():
                 if(employee=="admission"):
                     return  render_template('admissionHome.html')
                 elif(employee=="pharmacist"):
-                    
                     return redirect('pharma')
                 elif(employee=="diagnostic"):
-                    return employee+"diag"
+                    return redirect('diagnostics')
                 
             
 
@@ -319,7 +318,7 @@ def pharma():
                 if(account):
                     return render_template('pharmaHome.html',patients=account)
                 else:
-                    return render_template('pharmaHome.html', patients=account, msg='No patient details\n Click on Add customer to add patient details')
+                    return render_template('pharmaHome.html', patients=account, msg='No patient details')
             
 
     return redirect('/')
@@ -342,7 +341,7 @@ def searchPharmaPatient():
                     cursor.execute('select * from patient where ssn_id=%s or pat_id=%s;',(int(cid),int(cid),))
                     account = cursor.fetchall()
 
-                    print('fecting',account)
+                    print('fetching',account)
                 
                     if(account):
                         return  render_template('pharmaHome.html',patients=account)
@@ -358,7 +357,7 @@ def searchPharmaPatient():
 
 @app.route('/pharma/details/<int:pat_id>', methods=['GET', 'POST'])
 def pharmaPatientDetails(pat_id):
-    print('entereds')
+    print('entered')
     if(session):
         if(session["loggedin"]):
             global employee
@@ -368,7 +367,7 @@ def pharmaPatientDetails(pat_id):
                 print('type',type(pat_id))
                 cursor.execute('SELECT * FROM patient where pat_id= %s ', (int(pat_id),))
                 account = cursor.fetchone()
-                cursor.execute('SELECT * FROM patient_medicines where pat_id= %s ', (int(pat_id),))
+                cursor.execute('SELECT * FROM medicines_issued where pat_id= %s ', (int(pat_id),))
                 medicines=cursor.fetchall()
                 
                 if(account):
@@ -388,28 +387,32 @@ def issueMed(pat_id):
             global employee
             employee=session['employee']
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM medicines where available=1')
+            cursor.execute('SELECT * FROM medicines')
             medicines = cursor.fetchall()
             
 
             if(employee=="pharmacist"):
-                if request.method == 'POST' and 'quantity' in request.form and 'med_name' in request.form and 'rate' in request.form:
+                if request.method == 'POST' and 'med_name' in request.form and 'rate' in request.form and 'quantity_issued' in request.form:
                     
                     med_name=request.form['med_name']
-                    quantity=request.form['quantity']
+                    quantity_issued=request.form['quantity_issued']
                     rate=request.form['rate']
-                    print(med_name,rate,quantity,pat_id)
+                    print(med_name,rate,quantity_issued,pat_id)
 
                     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                    ts = time.time()
-                    issue_date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-            
-                    cursor.execute("INSERT INTO patient_medicines(pat_id, med_name, med_quantity, med_rate, med_amount, issue_date) values (%s, %s, %s,%s, %s, %s)", (pat_id, med_name, quantity, rate, quantity, issue_date))
-                    mysql.connection.commit()
-
-                
-                    if(medicines):
+                    cursor.execute("SELECT * FROM medicines WHERE med_name = %s", (med_name,))
+                    medicine = cursor.fetchone()
+                    med_id = medicine['med_id']
+                    quantity = medicine['quantity']
+                    if(int(quantity_issued) <= quantity):
+                        cursor.execute("INSERT INTO medicines_issued(pat_id, med_id, med_name, quantity_issued, med_rate, amount) values (%s, %s, %s, %s, %s, %s)", (pat_id, med_id, med_name, quantity_issued, rate, int(quantity_issued)*int(rate)))
+                        mysql.connection.commit()
+                        cursor.execute("UPDATE medicines SET quantity = %s WHERE med_id=%s",(quantity-int(quantity_issued),med_id))
+                        mysql.connection.commit()
                         return render_template('issueMed.html',medicines=medicines,pat_id=pat_id,msg="Medicines issued successfully")
+                    else:
+                        return render_template('issueMed.html',medicines=medicines,pat_id=pat_id,msg="Quantity unavailable")
+
                 else:
 
                     return render_template('issueMed.html',medicines=medicines,pat_id=pat_id)
@@ -418,6 +421,112 @@ def issueMed(pat_id):
     return redirect('/')
 
 
+@app.route('/diagnostics', methods=['GET', 'POST'])
+def diagnostics():
+    if(session):
+        if(session["loggedin"]):
+            global employee
+            employee=session['employee']
+            if(employee=="diagnostic"):
+                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                print(session['userid'])
+                cursor.execute('SELECT * FROM patient where status=%s',('Active',))
+                account = cursor.fetchall()
+                
+                if(account):
+                    return render_template('diagnosticsHome.html',patients=account)
+                else:
+                    return render_template('diagnosticsHome.html', patients=account, msg='No patient details')
+            
+
+    return redirect('/')
+
+
+@app.route('/diagnostics/', methods=['GET', 'POST'])
+def searchDiagnosticsPatient():
+    
+    if(session):
+        if(session["loggedin"]):
+            global employee
+            employee=session['employee']
+            if(employee=="diagnostic"):
+                if request.method == 'POST' and 'search' in request.form:
+                    cid= request.form['search']
+                    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    print(cid)
+            
+                    cursor.execute('select * from patient where ssn_id=%s or pat_id=%s;',(int(cid),int(cid),))
+                    account = cursor.fetchall()
+
+                    print('fetching',account)
+                
+                    if(account):
+                        return  render_template('diagnosticsHome.html',patients=account)
+                else:
+                    return redirect("/diagnostics")
+            
+
+    return redirect('/')
+
+
+@app.route('/diagnostics/details/<int:pat_id>', methods=['GET', 'POST'])
+def diagnosticsPatientDetails(pat_id):
+    print('entered')
+    if(session):
+        if(session["loggedin"]):
+            global employee
+            employee=session['employee']
+            if(employee=="diagnostic"):
+                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                print('type',type(pat_id))
+                cursor.execute('SELECT * FROM patient where pat_id= %s ', (int(pat_id),))
+                account = cursor.fetchone()
+                cursor.execute('SELECT * FROM diagnostics_conducted where pat_id= %s ', (int(pat_id),))
+                tests=cursor.fetchall()
+                
+                if(account):
+                    print(account)
+                    return  render_template('diagnosticsPatientDetails.html',patient=account,tests=tests)
+            
+
+    return redirect('/')
+
+
+@app.route('/conductDiagnostics/<int:pat_id>', methods=['GET', 'POST'])
+def conductDiagnostics(pat_id):
+    
+    if(session):
+        if(session["loggedin"]):
+            global employee
+            employee=session['employee']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM diagnostics')
+            tests = cursor.fetchall()
+            
+
+            if(employee=="diagnostic"):
+                if request.method == 'POST' and 'test_name' in request.form and 'rate' in request.form:
+                    
+                    test_name=request.form['test_name']
+                    test_rate=request.form['rate']
+                    print(test_name,test_rate,pat_id)
+
+                    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    cursor.execute("SELECT * FROM diagnostics WHERE test_name = %s", (test_name,))
+                    test = cursor.fetchone()
+                    test_id = test['test_id']
+                    cursor.execute("INSERT INTO diagnostics_conducted(pat_id, test_id, test_name, test_rate) values (%s, %s, %s, %s)", (pat_id, test_id, test_name, test_rate))
+                    mysql.connection.commit()
+
+                
+                    if(tests):
+                        return render_template('conductDiagnostics.html',tests=tests, pat_id=pat_id,msg="Test added successfully")
+                else:
+
+                    return render_template('conductDiagnostics.html',tests=tests, pat_id=pat_id)
+            
+
+    return redirect('/')
 
 
 

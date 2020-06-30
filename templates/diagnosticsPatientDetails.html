@@ -1,4 +1,4 @@
-{% extends "pharmaBase.html" %}
+{% extends "diagnosticsBase.html" %}
 
 {% block title %}
     Home
@@ -7,14 +7,14 @@
 
 {% block content %}
 
-<input id="med_value" style="display: none;"value='{{medicines}}'>
+<input id="med_value" style="display: none;"value='{{tests}}'>
 
 
   <div style="width: 70%;margin-top: 10px;">
 
     <div class="row" style="padding-right: 20px;padding-left: 20px;padding-top: 20px;margin-left: 10px;" >
       
-        <form action="{{ url_for('issueMed',pat_id=patient.pat_id) }}" method="POST" autocomplete="off">
+        <form action="{{ url_for('conductDiagnostics',pat_id=patient.pat_id) }}" method="POST" autocomplete="off">
         <button  type="submit" id="add" class="d-flex justify-content-start btn" style="padding-top: 10px;
         height: 50px;
         background-color: #3274d6;
@@ -23,7 +23,7 @@
         cursor: pointer;
         font-weight: bold;
         color: #ffffff;
-       ">Issue Medicines</button>
+       ">Add Diagnostics</button>
        </form>
       
       
@@ -169,27 +169,23 @@
 
 
 <div class="register container" style="width:70%;padding: 10px; margin-top: 50px;">
-    <h1> Issued Medicines</h1>
+    <h1> Diagnostics Conducted</h1>
     <table id="dtDynamicVerticalScrollExample" style="width:100%;"  class="table table-hover" >
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">MEDICINE NAME</th>
-            <th scope="col">QUANTITY</th>
-            <th scope="col">RATE</th>
+            <th scope="col">NAME</th>
             <th scope="col">AMOUNT</th>
           </tr>
         </thead>
         <tbody>
     
-          {% for i in medicines %} 
+          {% for i in tests %} 
      
           <tr class="clickable-row" data-href="{{ url_for('patientDetails',pat_id=i.pat_id) }}" method = POST>
             <th scope="row">{{ loop.index}}</th>
-            <td>{{i.med_name}}</td>
-            <td>{{i.quantity_issued}}</td>
-            <td>{{i.med_rate}}</td>
-            <td>{{i.amount}}</td>
+            <td>{{i.test_name}}</td>
+            <td>{{i.test_rate}}</td>
             
           </tr>
     {%endfor%} 
@@ -218,7 +214,7 @@
 
 // console.log(med,med.med_id)
 
-// var med=JSON.parse('{{medicines|tojson}}')
+// var med=JSON.parse('{{tests|tojson}}')
 // console.log(med,med[0].med_id)
 
 

@@ -1,0 +1,82 @@
+{% extends "diagnosticsBase.html" %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+		<div class="register" style="width: 40%;">
+			<h1>Conduct Diagnostics</h1>
+			<form action="{{  url_for('conductDiagnostics',pat_id=pat_id)}}" method="POST" autocomplete="off">
+
+
+                
+                <div class="container" style="margin-left: 20px;margin-right: 20px;" >
+
+                    <div class="row">
+                        <div  class="col-4" style="height: 50px;align-self: center;">Name of the Test  :</div>
+                        <div>
+                                    
+                            <select id="test_id" name="test_name" style=" width: 310px;
+                            height: 50px;
+                            border: 1px solid #dee0e4;
+                            margin-bottom: 20px;
+                            padding: 0 15px;" >
+                            {% for i in tests %} 
+                            <option value="{{i['test_name']}}">{{i['test_name']}}</option>
+                            {%endfor%} 
+                            
+                    </select><br>
+                        </div>
+                      </div>  
+                      <div class="row">
+                        <div class="col-4" style="height: 50px;align-self: center;">Amount</div>
+                        <div>
+                            <input disabled  type="number"  placeholder="{{tests[0].test_rate}}" id="rate_x" style=" width: 310px;
+                            height: 50px;
+                            
+                            border: 1px solid #dee0e4;
+                            margin-bottom: 20px;
+                            padding: 0 15px;" value="{{tests[0].test_rate}}" required>
+                            <input style="display: none;"  type="number" name="rate" placeholder="{{tests[0].test_rate}}" id="rate" style=" width: 310px;
+                            height: 50px;
+                            
+                            border: 1px solid #dee0e4;
+                            margin-bottom: 20px;
+                            padding: 0 15px;"  value="{{tests[0].test_rate}}" required>
+                        
+                           
+                          
+                        </div>
+                        </div>  
+             
+                    <center>{{ msg }}</center>
+                </div>
+                
+				
+				<input type="submit" value="Add">
+            </form>
+            
+        </div>
+
+{% endblock content%}
+
+
+{% block scripts %}
+<script>
+    $("#home").css("color", "#ffffff");
+    $('#test_id').change(function(){
+        var test=JSON.parse('{{tests|tojson}}')
+        var i= $('option:selected',this).index()    ; 
+        console.log(test,test[i])
+        console.log($('#rate').val())
+        $('#rate').val(test[i].test_rate)
+        $('#rate_x').val(test[i].test_rate)
+        console.log($('#rate').val())
+        console.log($('#rate_x').val())
+
+    
+})
+</script>
+{% endblock scripts %}

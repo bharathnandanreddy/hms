@@ -1,4 +1,4 @@
-{% extends "empbase.html" %}
+{% extends "diagnosticsBase.html" %}
 
 {% block title %}
     Home
@@ -14,19 +14,9 @@ justify-content: center;">
 
     <div class="row" style="padding-right: 20px;padding-left: 20px;padding-top: 20px;" >
       
-      <form action="/accounts/createaccount" method="POST">
-        <button type="submit"  id="add" class="d-flex justify-content-start btn" style="padding-top: 10px;
-        height: 50px;
-        background-color: #3274d6;
-        border: 0;
-        border-color:#3274d6 ;
-        cursor: pointer;
-        font-weight: bold;
-        color: #ffffff;
-       ">Add account </button>
-      </form>
+     
        
-       <form class="d-flex justify-content-end col"  action="{{ url_for('searchAccount') }}" method="POST">
+       <form class="d-flex justify-content-end col"  action="{{ url_for('searchDiagnosticsPatient') }}" method="POST">
         <input style=" display: flex;
         justify-content: center;
         align-items: center;
@@ -34,9 +24,9 @@ justify-content: center;">
         height: 50px;
         border: 1px solid #dee0e4;
         margin-bottom: 20px;
-        padding: 0 15px;" type="number" val name="search" placeholder="Account ID or Customer ID" id="search" required>
+        padding: 0 15px;" type="number" val name="search" placeholder="SSN ID or Patient ID" id="search" required>
     
-      <button type="submit" style="    display: flex;
+      <button type="submit" style="display: flex;
       border: 0;
       justify-content: center;
       align-items: center;
@@ -63,26 +53,24 @@ justify-content: center;">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">ACCOUNT ID</th>
-        <th scope="col">CUSTOMER ID</th>
-        <th scope="col">ACCOUNT TYPE</th>
-        <th scope="col">STATUS</th>
-        <th scope="col">MESSAGE</th>
-        <th scope="col">LAST UPDATED</th>
+        <th scope="col">PATIENT ID</th>
+        <th scope="col">SSN ID</th>
+        <th scope="col">NAME</th>
+        <th scope="col">AGE</th>
+        <th scope="col">DOJ</th>
       </tr>
     </thead>
     <tbody>
 
-      {% for i in accounts %} 
+      {% for i in patients %} 
  
-      <tr class="clickable-row" data-href="{{ url_for('accountDetails',cid=i.acc_id) }}" method = POST>
+      <tr class="clickable-row" data-href="{{ url_for('diagnosticsPatientDetails',pat_id=i.pat_id) }}" method = POST>
         <th scope="row">{{ loop.index}}</th>
-        <td>{{i.acc_id}}</td>
-        <td>{{i.cust_id}}</td>
-        <td>{{i.acc_type}}</td>
-        <td>{{i.status}}</td>
-        <td>{{i.message}}</td>
-        <td>{{i.last_updated}}</td>
+        <td>{{i.pat_id}}</td>
+        <td>{{i.ssn_id}}</td>
+        <td>{{i.pat_name}}</td>
+        <td>{{i.age}}</td>
+        <td>{{i.doj}}</td>
         
       </tr>
 {%endfor%} 
@@ -101,13 +89,13 @@ justify-content: center;">
 
 {% block scripts %}
 <script>
-    $("#accounts").css("color", "#ffffff");
+    $("#home").css("color", "#ffffff");
     $(".clickable-row").click(function() {
         window.location = $(this).data("href");
     });
 
     $("search-btn").click(function() {
-        window.location = $('').data();
+        console.log($('search').data())
     });
     
 
