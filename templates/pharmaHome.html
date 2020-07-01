@@ -64,7 +64,7 @@ justify-content: center;">
 
       {% for i in patients %} 
  
-      <tr class="clickable-row" data-href="{{ url_for('pharmaPatientDetails',pat_id=i.pat_id) }}" method = POST>
+      <tr class="clickable-row">
         <th scope="row">{{ loop.index}}</th>
         <td>{{i.pat_id}}</td>
         <td>{{i.ssn_id}}</td>
@@ -74,6 +74,8 @@ justify-content: center;">
         
       </tr>
 {%endfor%} 
+
+
      
     </tbody>
   </table>

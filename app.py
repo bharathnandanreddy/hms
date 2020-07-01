@@ -529,6 +529,79 @@ def conductDiagnostics(pat_id):
     return redirect('/')
 
 
+@app.route('/billing', methods=['GET', 'POST'])
+def billing():
+    if(session):
+        if(session["loggedin"]):
+            global employee
+            employee=session['employee']
+            if(employee=="admission"):
+                account={"ssn_id":"", "pat_id":0, "pat_name":"", "age":"","dod":"", "doj":"", "rtype":"", "address":"", "city":"", "state":"", "status":"","roombill":""}
+                med_sum=0
+                dig_sum=0
+                medicines=[]
+                tests=[]
+                msg=""
+
+                if(request.method=='POST' and 'confirm_pid' in request.form):
+                    pat_id=request.form['confirm_pid']
+                    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    print(int(pat_id))
+                    cursor.execute('UPDATE patient set status=%s WHERE pat_id= %s ', ("Discharged", int(pat_id)))
+                    mysql.connection.commit()
+                    msg="Payment Successfully"
+
+                
+                if request.method == 'POST' and 'pat_id' in request.form :
+                    pat_id=request.form['pat_id']
+                    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    print('type',type(pat_id))
+                    cursor.execute('SELECT * FROM patient where pat_id= %s and status=%s', (int(pat_id),'Active'))
+                    account = cursor.fetchone()
+                    if(account):
+                        ts = time.time()
+                        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+                        account["dod"]=timestamp
+                        diff=datetime.datetime.fromtimestamp(ts).date()-account["doj"]
+                        print("diff",diff.days)
+                        if(account["rtype"]=="Semi"):
+                            account["roombill"]=4000*diff.days
+                        if(account["rtype"]=="Single"):
+                            account["roombill"]=8000*diff.days
+                        if(account["rtype"]=="General"):
+                            account["roombill"]= 2000*diff.days
+                        print( account["roombill"])
+
+                        cursor.execute('SELECT * FROM medicines_issued where pat_id= %s', (int(pat_id),))
+                        medicines=cursor.fetchall()
+                        
+                        
+
+                        for med in medicines:
+                            med_sum+=med['amount']
+                        
+                        cursor.execute('SELECT * FROM diagnostics_conducted where pat_id= %s ', (int(pat_id),))
+                        tests=cursor.fetchall()
+                        for test in tests:
+                            dig_sum+=test['test_rate']
+
+                        grand_tot=account["roombill"]+med_sum+dig_sum
+                     
+                        print(account)
+                        return  render_template('billing.html',patient=account,medicines=medicines,med_sum=med_sum,dig_sum=dig_sum,tests=tests,grand_tot=grand_tot)
+                    else:
+                        return  render_template('billing.html',patient=account,medicines=medicines,med_sum=med_sum,dig_sum=dig_sum,tests=tests,msg="Invalid patient")
+                else:
+                    print(account)
+                    return render_template('billing.html',patient=account,medicines=medicines,med_sum=med_sum,dig_sum=dig_sum,tests=tests,msg=msg)
+
+            
+
+    return redirect('/')
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
