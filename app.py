@@ -559,10 +559,9 @@ def billing():
                     cursor.execute('SELECT * FROM patient where pat_id= %s and status=%s', (int(pat_id),'Active'))
                     account = cursor.fetchone()
                     if(account):
-                        ts = time.time()
-                        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+                        timestamp = datetime.date.today()
                         account["dod"]=timestamp
-                        diff=datetime.datetime.fromtimestamp(ts).date()-account["doj"]
+                        diff = account['dod'] - account["doj"]
                         print("diff",diff.days)
                         if(account["rtype"]=="Semi"):
                             account["roombill"]=4000*diff.days
@@ -590,7 +589,7 @@ def billing():
                         print(account)
                         return  render_template('billing.html',patient=account,medicines=medicines,med_sum=med_sum,dig_sum=dig_sum,tests=tests,grand_tot=grand_tot)
                     else:
-                        return  render_template('billing.html',patient=account,medicines=medicines,med_sum=med_sum,dig_sum=dig_sum,tests=tests,msg="Invalid patient")
+                        return  render_template('billing.html',patient=account,medicines=medicines,med_sum=med_sum,dig_sum=dig_sum,tests=tests,msg="Invalid patient ID")
                 else:
                     print(account)
                     return render_template('billing.html',patient=account,medicines=medicines,med_sum=med_sum,dig_sum=dig_sum,tests=tests,msg=msg)
